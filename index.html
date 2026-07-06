@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Opening Messages…</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       max-width:34rem;margin:0 auto;padding:2.5rem 1.25rem;text-align:center;color:#1a1a1a}
+  a.btn{display:inline-block;margin-top:1rem;padding:.8rem 1.4rem;border-radius:.6rem;
+        background:#0b57d0;color:#fff;text-decoration:none;font-weight:600}
+  p{line-height:1.5}
+  @media (prefers-color-scheme:dark){body{background:#111;color:#eee}}
+</style>
+</head>
+<body>
+  <p id="status">Opening your Messages app…</p>
+  <p><a id="fallback" class="btn" href="#">Tap here if it doesn't open</a></p>
+  <p style="font-size:.85rem;opacity:.7">Nothing on this page is sent to any server — the phone number and
+  message stay in your browser only.</p>
+<script>
+(function () {
+  var frag = (location.href.split('#')[1] || '');
+  var slash = frag.indexOf('/');
+  if (slash < 0) { document.getElementById('status').textContent = 'No message data in link.'; return; }
+  var num = frag.slice(0, slash);
+  var enc = frag.slice(slash + 1);
+  var text; try { text = decodeURIComponent(enc); } catch (e) { text = enc; }
+  var uri = 'sms:' + num + '&body=' + encodeURIComponent(text);
+  var fb = document.getElementById('fallback');
+  fb.setAttribute('href', uri);
+  fb.textContent = 'Tap to text ' + num;
+  location.replace(uri);
+})();
+</script>
+</body>
+</html>
